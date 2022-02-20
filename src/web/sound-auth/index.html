@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sound Authentication</title>
+</head>
+<link rel="stylesheet" href="/web/sound-auth/css/style.css">
+<link rel="stylesheet" href="/web/sound-auth/css/bootstrap.min.css">
+<script type="text/javascript" src="/web/sound-auth/js/quiet.js"></script>
+<script type="text/javascript" src="/web/sound-auth/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/web/sound-auth/js/quiet-emscripten.js"></script>
+<script type="text/javascript" src="/web/sound-auth/js/jquery.js"></script>
+<script type="text/javascript" src="/web/sound-auth/js/auth.js"></script>
+
+<body>
+    <center><h2 id = 'login-heading'>Login</h2></center>
+    <div>
+        <div class = 'login-container'>
+            <form>
+                <div class="input">
+                    <input type="email" class="form-control" placeholder="Enter your email" name="email" id="email"/>
+                </div>
+                <button class = 'btn-block' id = 'send-button'>Request OTP</button><br>
+                <label id = 'otp-message'></label>
+                <label id = 'otp-message-error'></label>
+            </form>
+        </div>
+        <div class = 'login-container'>
+            <div class="input" >
+                <input type="text" name = 'otp' id = 'otp' placeholder="OTP"/>
+            </div>
+             
+             <button id = 'otp-submit'>Submit</button>
+        </div>    
+    </div>
+    
+
+    
+</body>
+</html>

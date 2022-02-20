@@ -1,0 +1,24 @@
+.login-container {
+    width: 60%;
+    margin:auto;
+    text-align: center;
+    padding: 50px;   
+}
+#login-heading {
+    padding: 20px;
+}
+#otp-message {
+    font-size: small;
+    color: green;
+}
+#otp-message-error {
+    font-size: small;
+    color: red;
+}
+.input {
+    padding: 20px;
+}
+body {
+    text-align: center;
+    margin-top: 20px;
+}

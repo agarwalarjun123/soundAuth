@@ -1,0 +1,4 @@
+FROM node:14-alpine
+LABEL OWNER=" arjun agarwal"
+RUN apk update && apk add ca-certificates && apk add git && rm -rf /var/cache/apk/*
+RUN npm i -g pnpm
