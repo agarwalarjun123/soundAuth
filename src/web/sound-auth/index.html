@@ -16,7 +16,11 @@
 
 <body>
     <center><h2 id = 'login-heading'>Login</h2></center>
-    <div>
+    <center>
+        <button id = 'show-otp' class="btn btn-primary" selected>Login Using OTP</button>
+        <button id = 'show-sound-auth' class="btn btn-primary">Login Using SoundAuth</button>
+    </center>
+    <div id="otp-container">
         <div class = 'login-container'>
             <form>
                 <div class="input">
@@ -34,6 +38,9 @@
              
              <button id = 'otp-submit'>Submit</button>
         </div>    
+    </div>
+    <div id="soundauth-container" class = 'login-container' style="display:none;">
+        <button id = 'soundauth-button'>Login Using SoundAuth</button>
     </div>
     
 

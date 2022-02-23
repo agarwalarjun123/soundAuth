@@ -30,5 +30,10 @@ const schema = new Schema({
         required: false,
         trim: true
     }
-})
+},{
+    timestamps: {
+      createdAt: "created_at",
+      updatedAt: "updated_at",
+    },
+  })
 module.exports = schema

@@ -26,11 +26,16 @@ const verifyAuthSoundToken = errorDecorator(async (req, _res, next) => {
   const data = await authService.verifyAuthSoundToken(token);
   return next(data);
 });
-
+const profile = errorDecorator(async (req, _res, next) => {
+  const id = req.user
+  const data = await authService.profile(id);
+  return next(data);
+});
 
 module.exports = {
   requestOTP,
   validateOTP,
   generateAuthSoundToken,
-  verifyAuthSoundToken
+  verifyAuthSoundToken,
+  profile
 };

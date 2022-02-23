@@ -1,5 +1,4 @@
 /* eslint-disable global-require */
-const insights = require('applicationinsights');
 const config = require('config');
 const logger = require('./util/logger/logger.util');
 

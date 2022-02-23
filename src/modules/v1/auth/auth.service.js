@@ -1,16 +1,17 @@
-const { v4    } = require("uuid");
+const { v4 } = require("uuid");
 const moment = require("moment");
 const { generateOTP, hashOTP } = require("./auth.util");
 const boom = require("@hapi/boom");
 const jwt = require("jsonwebtoken");
-const {sendOTPMessage} = require("../../../util/email/email.util")
+const { sendOTPMessage } = require("../../../util/email/email.util");
 const { models } = require("../../../model");
 const constant = require("../../../util/constants");
 
-const requestOTP = async ({ source, email }) => {
+const requestOTP = async ({ email }) => {
   const session_id = v4();
   const start_time = moment.utc().toISOString();
   const { otp, hashedOTP } = generateOTP();
+  const source = constant.SOURCE.OTP
   const payload = {
     session_id,
     source,
@@ -21,7 +22,7 @@ const requestOTP = async ({ source, email }) => {
     hashedOTP,
   };
   await new models.Session(payload).save();
-  await sendOTPMessage({otp, email})
+  await sendOTPMessage({ otp, email });
   return {
     otp,
     session_id,
@@ -51,7 +52,7 @@ const validateOTP = async (otp, session_id) => {
     },
     { upsert: true, new: true }
   );
-  const token = jwt.sign({id:user.id}, "PRIVATE_KEY", {
+  const token = jwt.sign({ id: user.id }, "PRIVATE_KEY", {
     expiresIn: constant.TOKEN_EXPIRY,
   });
 
@@ -63,17 +64,22 @@ const validateOTP = async (otp, session_id) => {
 const generateAuthSoundToken = async (id) => {
   const user = await models.User.findById(id);
   const session_id = v4();
-  await new models.Session({
-    source: user.source,
+  const session = await new models.Session({
+    source: constant.SOURCE.SOUND,
     email: user.email,
     metrics: {
       start_time: moment.utc().toISOString(),
     },
     session_id,
-  });
-  const soundToken = jwt.sign({ email: user.email, session_id }, "PRIVATE_KEY_2", {
-    expiresIn: 60 * 5,
-  });
+  }).save();
+  console.log(session)
+  const soundToken = jwt.sign(
+    { email: user.email, session_id },
+    "PRIVATE_KEY_2",
+    {
+      expiresIn: 60 * 5,
+    }
+  );
   return {
     soundToken,
   };
@@ -86,23 +92,30 @@ const verifyAuthSoundToken = async (token) => {
   } catch (err) {
     throw boom.badRequest("Invalid Token.");
   }
-  const session = await models.Session.findOne({
-    session_id: payload.session_id,
-  });
+  const session_id = payload.session_id
+  console.log(session_id)
+  console.log(await models.Session.findOne({session_id : "dcea59e9-ee54-4603-bf2d-9a268375a8d7"}))
+  const session = await models.Session.findOne({ session_id });
+  session.metrics = {}
   session.metrics.end_time = moment.utc().toISOString();
   await session.save();
   const user = await models.User.findOne({ email: payload.email });
-  token = jwt.sign(user.id, "PRIVATE_KEY", {
+  token = jwt.sign({ id: user.id }, "PRIVATE_KEY", {
     expiresIn: constant.TOKEN_EXPIRY,
   });
   return {
-    token
-  }
+    token,
+  };
+};
+
+const profile = async (id) => {
+  return await models.User.findById(id);
 };
 
 module.exports = {
   requestOTP,
   validateOTP,
   generateAuthSoundToken,
-  verifyAuthSoundToken
+  verifyAuthSoundToken,
+  profile,
 };

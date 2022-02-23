@@ -8,6 +8,10 @@ const constant = {
     MONGO_SERVER_TIMEOUT: 3000,
   },
   USER_SOURCE: ['OTP','SOUND'],
+  SOURCE : {
+    OTP: 'OTP',
+    SOUND: 'SOUND'
+  },
   schema: {
     
     pagination: {

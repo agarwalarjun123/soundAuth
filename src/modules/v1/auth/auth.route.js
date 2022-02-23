@@ -13,4 +13,9 @@ router.post(
   "/sound-validate-token",
   authController.verifyAuthSoundToken
 );
+router.get(
+  "/profile",
+  authenticate,
+  authController.profile
+);
 module.exports = router;
