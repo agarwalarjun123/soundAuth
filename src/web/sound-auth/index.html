@@ -17,8 +17,8 @@
 <body>
     <center><h2 id = 'login-heading'>Login</h2></center>
     <center>
-        <button id = 'show-otp' class="btn btn-primary" selected>Login Using OTP</button>
-        <button id = 'show-sound-auth' class="btn btn-primary">Login Using SoundAuth</button>
+        <button id = 'show-otp' class="btn btn-primary" style = 'display: none;' selected>Login Using OTP</button>
+        <button id = 'show-sound-auth' class="btn btn-primary" style = 'display: none;'>Login Using SoundAuth</button>
     </center>
     <div id="otp-container">
         <div class = 'login-container'>
@@ -40,7 +40,8 @@
         </div>    
     </div>
     <div id="soundauth-container" class = 'login-container' style="display:none;">
-        <button id = 'soundauth-button'>Login Using SoundAuth</button>
+        <button id = 'soundauth-button'>Login Using SoundAuth</button><br>
+        <label id = 'sound-message'></label>
     </div>
     
 

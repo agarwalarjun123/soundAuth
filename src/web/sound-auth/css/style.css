@@ -1,5 +1,5 @@
 .login-container {
-    width: 60%;
+    width: 100%;
     margin:auto;
     text-align: center;
     padding: 50px;   
@@ -21,4 +21,8 @@
 body {
     text-align: center;
     margin-top: 20px;
+}
+#sound-message {
+    font-size: small;
+    color: green;
 }

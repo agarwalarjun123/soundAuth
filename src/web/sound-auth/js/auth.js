@@ -2,6 +2,7 @@ $(() => {
   setDeviceType();
   $("#send-button").on("click", (e) => {
     e.preventDefault();
+    $("#otp-message").html("OTP sent");
     const email = $("#email").val();
     const source = "SOUND";
 
@@ -16,7 +17,6 @@ $(() => {
       },
       success: (data) => {
         localStorage.setItem("session_id", data?.data?.session_id);
-        $("#otp-message").html("OTP sent");
       },
     });
   });
@@ -44,6 +44,7 @@ $(() => {
   });
   $("#soundauth-button").on("click", () => {
     setupSoundReceiver();
+    $("#sound-message").html("Sound Receiver listening.... Please lower the volume less than 50% of the mobile transmitter");
   });
   $("#show-otp").on("click", (e) => {
     $("#otp-container").show();
@@ -55,8 +56,8 @@ $(() => {
   });
 });
 function setupSoundReceiver() {
-  let token = ''
-  let valid = false
+  let token = "";
+  let valid = false;
   function onQuietReady() {
     var profilename = "audible";
     Quiet.receiver({
@@ -67,22 +68,22 @@ function setupSoundReceiver() {
       onReceiveFail: onReceiveFail,
     });
     function onReceive(recvPayload) {
-      const payload = Quiet.ab2str(recvPayload)
-      console.log(payload)
-      if(!valid && payload[0] === ':'){
-        valid = true
-        token = payload.slice(1)
+      const payload = Quiet.ab2str(recvPayload);
+          
+      if (payload[0] === ":") {
+        valid = true;
+        token = payload.slice(1);
         return;
       }
-      if(valid && payload[payload.length - 1] === ':') {
-        token += payload.slice(0,-1);
-        validateSoundToken(token)
+      if (valid && payload[payload.length - 1] === ":") {
+        token += payload.slice(0, -1);
+        console.log(token)
+        validateSoundToken(token);
         return;
       }
-      if(valid) {
-        token += payload
+      if (valid) {
+        token += payload;
       }
-
     }
     function validateSoundToken(token) {
       $.ajax({
@@ -91,23 +92,21 @@ function setupSoundReceiver() {
         dataType: "json",
         contentType: "application/json",
         headers: {
-          soundauthorization: token
+          soundauthorization: token,
         },
         error: (xhr, status, errorThrown) => {
           valid = false;
-          token = ''
-          console.log(xhr.response.data)
+          token = "";
+          console.log(xhr.response.data);
         },
         success: (data) => {
-          console.log("ddd")
           valid = false;
-          token = ''
+          token = "";
           localStorage.setItem("token", data?.data?.token);
           window.location.href = "/web/sound-auth/profile.html";
         },
       });
-      
-    } 
+    }
 
     function onReceiverCreateFail(reason) {
       console.log("failed to create quiet receiver: " + reason);
@@ -115,7 +114,7 @@ function setupSoundReceiver() {
 
     function onReceiveFail() {
       valid = false;
-      token = ''
+      token = "";
     }
   }
   Quiet.init({
@@ -130,7 +129,6 @@ function setupSoundReceiver() {
   Quiet.addReadyCallback(onQuietReady, onQuietFail);
 }
 
-
 function setDeviceType() {
   let isMobileDevice = window.matchMedia("only screen and (max-width: 760px)")
     .matches;
@@ -138,5 +136,7 @@ function setDeviceType() {
     localStorage.setItem("type", "mweb");
   } else {
     localStorage.setItem("type", "dweb");
+    $("#show-otp").show()
+    $("#show-sound-auth").show()
   }
 }

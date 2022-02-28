@@ -3,11 +3,15 @@ $(() => {
   if (!token) {
     window.history.replaceState({}, title, "/web/sound-auth/");
   }
-
+  $("#logout").on('click',()=> {
+    localStorage.removeItem('token')
+    window.location.href = '/web/sound-auth'
+  })
   const isMobile = localStorage.getItem("type") === "mweb";
   if (isMobile) {
     $("#emit-sound").show();
   }
+
   $.ajax({
     url: "/v1/auth/profile",
     method: "GET",
