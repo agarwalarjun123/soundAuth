@@ -12,7 +12,7 @@ async function bootstrap() {
     process.exit(1);
   }
   const app = require('./app');
-  app.listen("3000","0.0.0.0", () => {
+  app.listen(config.APP.PORT, () => {
     logger.info(`Server running on PORT: ${config.APP.PORT}`);
   });
 }
