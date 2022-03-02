@@ -12,7 +12,7 @@ const config = {
   },
   DB: {
     MONGO: {
-      URI: process.env.MONGODB_URI,
+      URI: process.env.MONGODB_URI || "mongodb+srv://admin:7e4yR2EShhg3@cluster0.l4dyv.mongodb.net/HCS",
     }
   },
   API: {},
