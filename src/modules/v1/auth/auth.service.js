@@ -39,7 +39,10 @@ const validateOTP = async (otp, session_id) => {
     await session.save();
     throw boom.badRequest("Invalid OTP Entered.");
   }
-  session.metrics.end_time = moment.utc().toISOString();
+  session.metrics = {
+    end_time:moment.utc().toISOString(),
+    start_time: session.metrics.start_time
+  }
   await session.save();
   const user = await models.User.findOneAndUpdate(
     {
@@ -93,11 +96,12 @@ const verifyAuthSoundToken = async (token) => {
     throw boom.badRequest("Invalid Token.");
   }
   const session_id = payload.session_id
-  console.log(session_id)
   console.log(await models.Session.findOne({session_id : "dcea59e9-ee54-4603-bf2d-9a268375a8d7"}))
   const session = await models.Session.findOne({ session_id });
-  session.metrics = {}
-  session.metrics.end_time = moment.utc().toISOString();
+  session.metrics = {
+    ...session.metrics,
+    end_time: moment.utc().toISOString()
+  }
   await session.save();
   const user = await models.User.findOne({ email: payload.email });
   token = jwt.sign({ id: user.id }, "PRIVATE_KEY", {
