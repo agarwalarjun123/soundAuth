@@ -33,9 +33,10 @@ $(() => {
       dataType: "json",
       contentType: "application/json",
       data: JSON.stringify({ otp, session_id }),
-      error: (xhr, status, errorThrown) => {},
+      error: (xhr, status, errorThrown) => {
+        $("#otp-message-error-result").html(xhr.responseJSON.error.message);
+      },
       success: (data) => {
-        console.log("data", data);
         localStorage.setItem("token", data?.data?.token);
         localStorage.removeItem("session_id");
         window.location.href = "/web/sound-auth/profile.html";
