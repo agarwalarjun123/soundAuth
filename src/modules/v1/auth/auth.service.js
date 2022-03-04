@@ -22,7 +22,7 @@ const requestOTP = async ({ email }) => {
     hashedOTP,
   };
   await new models.Session(payload).save();
-  await sendOTPMessage({ otp, email });
+  sendOTPMessage({ otp, email });
   return {
     otp,
     session_id,
