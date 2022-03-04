@@ -32,7 +32,7 @@ const validateOTP = async (otp, session_id) => {
   const hashedOTP = hashOTP(otp);
   const session = await models.Session.findOne({ session_id });
   if (!session) {
-    throw boom.badRequest("Invalid Session.");
+    throw boom.badRequest("Please request OTP again!");
   }
   if (session.hashedOTP !== hashedOTP) {
     session.metrics.invalid_attempts = session.metrics.invalid_attempts + 1;
