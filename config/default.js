@@ -4,6 +4,8 @@ const config = {
     NODE_ENV: process.env.NODE_ENV || 'test',
     PORT: process.env.PORT || 3000,
     REQUEST_BODY_SIZE_LIMIT: '50mb',
+    TOKEN_KEY: process.env.TOKEN_KEY || "test",
+    SOUND_TOKEN_KEY: process.env.SOUND_TOKEN_KEY || 'test'
   },
   LOGGER: {
     LOG_LEVEL: process.env.LOG_LEVEL || 'info',

@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const { sendOTPMessage } = require("../../../util/email/email.util");
 const { models } = require("../../../model");
 const constant = require("../../../util/constants");
+const config = require("config")
 
 const requestOTP = async ({ email }) => {
   const session_id = v4();
@@ -55,7 +56,7 @@ const validateOTP = async (otp, session_id) => {
     },
     { upsert: true, new: true }
   );
-  const token = jwt.sign({ id: user.id }, "PRIVATE_KEY", {
+  const token = jwt.sign({ id: user.id }, config.APP.TOKEN_KEY, {
     expiresIn: constant.TOKEN_EXPIRY,
   });
 
@@ -78,7 +79,7 @@ const generateAuthSoundToken = async (id) => {
   console.log(session)
   const soundToken = jwt.sign(
     { email: user.email, session_id },
-    "PRIVATE_KEY_2",
+    config.APP.SOUND_TOKEN_KEY,
     {
       expiresIn: 60 * 5,
     }
@@ -91,12 +92,11 @@ const generateAuthSoundToken = async (id) => {
 const verifyAuthSoundToken = async (token) => {
   let payload;
   try {
-    payload = jwt.verify(token, "PRIVATE_KEY_2");
+    payload = jwt.verify(token, config.APP.SOUND_TOKEN_KEY);
   } catch (err) {
     throw boom.badRequest("Invalid Token.");
   }
   const session_id = payload.session_id
-  console.log(await models.Session.findOne({session_id : "dcea59e9-ee54-4603-bf2d-9a268375a8d7"}))
   const session = await models.Session.findOne({ session_id });
   session.metrics = {
     ...session.metrics,

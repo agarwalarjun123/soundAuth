@@ -1,7 +1,7 @@
 {
-  "name": "hrx-labs",
+  "name": "soundAuth",
   "version": "1.0.0",
-  "description": "hrx lab module",
+  "description": "sound auth module",
   "main": "index.js",
   "private": true,
   "engines": {

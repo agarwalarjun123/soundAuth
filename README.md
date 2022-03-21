@@ -1,3 +1,0 @@
-## HRx-Labs
-
-### Introduction
